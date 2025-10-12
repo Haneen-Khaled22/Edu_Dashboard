@@ -23,7 +23,7 @@ import {
   Settings,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
-import adminphoto from "../../assets/usephoto.png";
+import adminphoto from "../../assets/edulogo.jpg";
 
 const drawerWidth = 240;
 
@@ -48,13 +48,13 @@ export default function ResponsiveSidebar({ children }) {
           flexDirection: "column",
           alignItems: "center",
           
-          mt: 1,
+       
         }}
       >
-        <Avatar src={adminphoto} sx={{ width: 40, height: 40, mb: 1 ,mt:2}} />
-        <Typography sx={{ fontWeight: 600 }}>Admin Name</Typography>
+<Avatar src={adminphoto} sx={{ width: 100, height: 100 ,mt:2,objectFit:"cover"}} /> 
+        <Typography sx={{ fontWeight: 600 }}>Edu Master</Typography>
         <Typography sx={{ color: "gray", fontSize: "0.85rem",marginBottom:2 }}>
-          Administrator
+          Super Admin
         </Typography>
       </Toolbar>
       <Divider />
@@ -94,7 +94,8 @@ export default function ResponsiveSidebar({ children }) {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" noWrap>
+          <Typography variant="h6" noWrap display={"flex"}  alignItems="center">
+            <Avatar src={adminphoto} sx={{ width: 50, height: 50 ,objectFit:"cover"}} /> 
             Edu Master Dashboard
           </Typography>
         </Toolbar>

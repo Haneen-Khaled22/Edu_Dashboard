@@ -1,6 +1,6 @@
 import React from 'react'
 import { Outlet } from 'react-router-dom'
-import ResponsiveSidebar from '../../Components/NavBar/NavBar'
+import ResponsiveSidebar from '../../Components/SideBar/SideBar'
 
 function Layout() {
   return (
