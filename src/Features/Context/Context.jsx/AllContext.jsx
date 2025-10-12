@@ -5,7 +5,7 @@ const UsersContext = createContext();
 
 export function UsersContextProvider({ children }) {
   const [totalUsers, setTotalUsers] = useState([]);
-  // const [totalLessons, setTotalLessons] = useState([]);
+  const [totalLessons, setTotalLessons] = useState([]);
 
    const { token } = useAuth();
   
@@ -40,6 +40,7 @@ export function UsersContextProvider({ children }) {
     }
   };
 
+  // get all admins
    const getAllAdmins = async () => {
     try {
       
@@ -71,41 +72,51 @@ export function UsersContextProvider({ children }) {
 
 
   // get all lessons
-  // const getAllLessons = async () => {
-  //   try {
-    
+ const getAllLessons = async (page = 1, limit = 10) => {
+  try {
+    const token = localStorage.getItem("token");
 
-  //   if (!token) {
-  //     console.error("No token found in localStorage");
-  //     return;
-  //   }
-  //     const response = await fetch("https://edu-master-psi.vercel.app/admin/all-user", {
-  //       headers: {
-  //         token: token
-  //       },
-  //     });
+    if (!token) {
+      console.error("No token found in localStorage");
+      return;
+    }
 
-  //     const data = await response.json();
-  //     console.log(data);
+    // ✅ لو API عنده pagination
+    const response = await fetch(
+      `https://edu-master-psi.vercel.app/lesson/?classLevel=Grade 1 Secondary&page=${page}&limit=${limit}`,
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
 
-  //     if (response.ok) {
-  //       setTotalUsers(data.data); // لو رجعوا بيانات بنحدث الستيت
-  //     } else {
-  //       console.error("Error fetching users:", data.message);
-  //     }
+    const data = await response.json();
+    console.log("Lessons Data:", data);
 
-  //     return data;
-  //   } catch (error) {
-  //     console.error("Fetch Users Error:", error);
-  //   }
-  // };
+    if (response.ok) {
+      // ✅ حفظ البيانات في الـ state
+      setTotalLessons(data.data || []);
+
+      // ✅ نرجع كل حاجة علشان الكومبوننت يستخدمها
+      return {
+        lessons: data.data || [],
+        pagination: data.pagination || { page: 1, total: 0, totalPages: 1 },
+      };
+    } else {
+      console.error("Error fetching lessons:", data.message);
+      return { lessons: [], pagination: {} };
+    }
+  } catch (error) {
+    console.error("Fetch Lessons Error:", error);
+    return { lessons: [], pagination: {} };
+  }
+};
 
   return (
-    <UsersContext.Provider value={{ totalUsers, setTotalUsers, getAllUsers,getAllAdmins }}>
+    <UsersContext.Provider value={{ totalUsers, setTotalUsers, getAllUsers,getAllAdmins,getAllLessons,totalLessons,setTotalLessons }}>
       {children}
     </UsersContext.Provider>
   );
 }
-
-// ✅ كستم هوك
 export const useUsers = () => useContext(UsersContext);

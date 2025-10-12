@@ -54,7 +54,7 @@ export default function ResponsiveSidebar({ children }) {
 <Avatar src={adminphoto} sx={{ width: 100, height: 100 ,mt:2,objectFit:"cover"}} /> 
         <Typography sx={{ fontWeight: 600 }}>Edu Master</Typography>
         <Typography sx={{ color: "gray", fontSize: "0.85rem",marginBottom:2 }}>
-          Super Admin
+          Administrator
         </Typography>
       </Toolbar>
       <Divider />

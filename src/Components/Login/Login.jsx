@@ -1,122 +1,84 @@
-import React, { useContext, useState } from "react";
-import {
-  Box,
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Grid,
-} from "@mui/material";
+import React, { useState } from "react";
 import { useAuth } from "../../Features/Context/Context.jsx/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-    let navigate = useNavigate();
-    let {loginAsAdmin} = useAuth();
+  const navigate = useNavigate();
+  const { loginAsAdmin } = useAuth();
   const [form, setForm] = useState({ email: "", password: "" });
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async(e) => {
-    
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const res = await loginAsAdmin(form.email, form.password);
 
     console.log("Login data:", res);
-    
+
     if (res.success) {
-      console.log("Login successful ");
-      navigate("/"); // 
+      console.log("Login successful");
+      navigate("/");
     } else {
-      console.log("Login failed ");
       alert("Invalid email or password");
     }
-  
-    
   };
 
   return (
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="center"
-      sx={{
-        minHeight: "100vh",
-        background: "linear-gradient(135deg, #6a11cb 0%, #2575fc 100%)",
-        padding:0,
-        margin:0
-      }}
-    >
-      {/* كبرنا البوكس */}
-      <Grid item xs={12} sm={8} md={5} lg={4}>
-        <Paper
-          elevation={8}
-          sx={{
-            p: { xs: 3, sm: 5 },
-            borderRadius: 4,
-            textAlign: "center",
-            width: "100%",
-            maxWidth: 500, // أقصى عرض ثابت عشان الشكل يفضل متناسق
-            mx: "auto",
-          }}
-        >
-          <Typography variant="h5" fontWeight="bold" gutterBottom>
-            Login
-          </Typography>
+    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 to-blue-600 px-4">
+      <div className="bg-white shadow-lg rounded-2xl w-full max-w-md p-8">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+          Login as an Admin
+        </h2>
 
-          <Box
-            component="form"
-            onSubmit={handleSubmit}
-            sx={{ display: "flex", flexDirection: "column", gap: 2, mt: 2 }}
-          >
-            <TextField
-              label="Email"
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label
+              htmlFor="email"
+              className="block text-gray-700 font-medium mb-1"
+            >
+              Email
+            </label>
+            <input
+              id="email"
               name="email"
               type="email"
               value={form.email}
               onChange={handleChange}
-              fullWidth
               required
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Enter your admin email"
             />
+          </div>
 
-            <TextField
-              label="Password"
+          <div>
+            <label
+              htmlFor="password"
+              className="block text-gray-700 font-medium mb-1"
+            >
+              Password
+            </label>
+            <input
+              id="password"
               name="password"
               type="password"
               value={form.password}
               onChange={handleChange}
-              fullWidth
               required
+              className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 focus:outline-none"
+              placeholder="Enter your password"
             />
+          </div>
 
-            <Button
-              type="submit"
-              variant="contained"
-              fullWidth
-              sx={{
-                mt: 1,
-                py: 1.2,
-                borderRadius: 2,
-                backgroundColor: "#2575fc",
-                fontWeight: "bold",
-                textTransform: "none",
-                "&:hover": { backgroundColor: "#1a5edb" },
-              }}
-            >
-              Sign In
-            </Button>
-          </Box>
-
-          <Typography
-            variant="body2"
-            sx={{ mt: 2, color: "text.secondary", cursor: "pointer" }}
+          <button
+            type="submit"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-300"
           >
-            Forgot your password?
-          </Typography>
-        </Paper>
-      </Grid>
-    </Grid>
+            Sign In
+          </button>
+        </form>
+      </div>
+    </div>
   );
 }
