@@ -2,7 +2,7 @@
 
 @font-face {
   font-family: 'Dosis';
-  src: url('/src/assets/fonts/Dosis-VariableFont_wght.ttf') format('woff2');
+  src: url('/src/assets/fonts/DMSans-VariableFont_opsz\,wght.ttf') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-size: larger;
@@ -10,7 +10,7 @@
 
 @font-face {
   font-family: 'Dosis';
-  src: url('/src/assets/fonts/Dosis-VariableFont_wght.ttf') format('woff2');
+  src: url('/src/assets/fonts/DMSans-VariableFont_opsz\,wght.ttf') format('woff2');
   font-weight: 900;
   font-style: normal;
 }

@@ -83,7 +83,7 @@ export function UsersContextProvider({ children }) {
 
     // ✅ لو API عنده pagination
     const response = await fetch(
-      `https://edu-master-psi.vercel.app/lesson/?classLevel=Grade 1 Secondary&page=${page}&limit=${limit}`,
+      `https://edu-master-psi.vercel.app/lesson/?isPaid=true&sortBy=scheduledDate&sortOrder=asc&scheduledAfter=2025-07-01&page=${page}&limit=${limit}`,
       {
         headers: {
           token: token,
@@ -113,8 +113,77 @@ export function UsersContextProvider({ children }) {
   }
 };
 
+// get lesson ById
+ // ✅ Get Lesson by ID
+const getLessonById = async (id) => {
+  try {
+    if (!token) {
+      console.error("No token found in localStorage");
+      return;
+    }
+
+    const response = await fetch(
+      `https://edu-master-psi.vercel.app/lesson/${id}`,
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+    console.log("Lesson details:", data);
+
+    if (response.ok) {
+      console.log("Fetched lesson details successfully");
+      return data;
+    } else {
+      console.error("Error fetching lesson details:", data.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Fetch lesson detail error:", error);
+  }
+};
+
+// ✅ Delete Lesson
+const deleteLesson = async (id) => {
+  try {
+    if (!token) {
+      console.error("No token found in localStorage");
+      return;
+    }
+
+    const response = await fetch(
+      `https://edu-master-psi.vercel.app/lesson/${id}`,
+      {
+        method: "DELETE",
+        headers: {
+          token: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+    console.log("Delete response:", data);
+
+    if (response.ok) {
+      console.log("Lesson deleted successfully");
+    } else {
+      console.error("Error deleting lesson:", data.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Delete lesson error:", error);
+  }
+};
+
+
+
   return (
-    <UsersContext.Provider value={{ totalUsers, setTotalUsers, getAllUsers,getAllAdmins,getAllLessons,totalLessons,setTotalLessons }}>
+    <UsersContext.Provider value={{ totalUsers, setTotalUsers, getAllUsers,getAllAdmins,getAllLessons,totalLessons,setTotalLessons,getLessonById,deleteLesson }}>
       {children}
     </UsersContext.Provider>
   );

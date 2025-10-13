@@ -10,6 +10,7 @@ import Login from './Components/Login/Login'
 import { AuthContextProvider } from './Features/Context/Context.jsx/AuthContext'
 import { UsersContextProvider } from './Features/Context/Context.jsx/AllContext'
 import "tailwindcss";
+import LessonDetails from './Components/LessonDetails/LessonDetails'
 
 function App() {
 
@@ -21,7 +22,8 @@ function App() {
         {path:"users",element:<Users/>},
         {path:"lessons",element:<Lessons/>},
         {path:"settings",element:<Setings/>},
-        {path:"login",element:<Login/>}
+        {path:"login",element:<Login/>},
+        {path:"lessons/:id",element:<LessonDetails/>}
       ]
     }
   ])

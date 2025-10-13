@@ -18,12 +18,15 @@
     "@mui/x-data-grid": "^8.13.1",
     "@mui/x-data-grid-generator": "^8.13.1",
     "@tailwindcss/vite": "^4.1.14",
+    "framer-motion": "^12.23.24",
     "lucide-react": "^0.545.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
+    "react-hot-toast": "^2.6.0",
     "react-router-dom": "^7.9.3",
     "recharts": "^3.2.1",
     "styled-components": "^6.1.19",
+    "sweetalert2": "^11.26.2",
     "tailwindcss": "^4.1.14"
   },
   "devDependencies": {

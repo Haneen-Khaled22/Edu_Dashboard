@@ -2,6 +2,7 @@ import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
 import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LessonsGrid() {
   const { getAllLessons } = useUsers();
@@ -10,6 +11,7 @@ export default function LessonsGrid() {
   const [total, setTotal] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
+  const navigate = useNavigate(); // 👈 استخدم النيفيجيت هنا
 
   const fetchLessons = async (pageNum = 1) => {
     setLoading(true);
@@ -31,6 +33,7 @@ export default function LessonsGrid() {
             createdAt: lesson.createdAt
               ? new Date(lesson.createdAt).toLocaleDateString()
               : "N/A",
+            fullData: lesson, // 👈 خزن البيانات الأصلية لو عايز تبعتها كلها
           };
         })
       );
@@ -65,7 +68,6 @@ export default function LessonsGrid() {
         <span
           style={{
             color: params.value === "Free" ? "green" : "red",
-         
           }}
         >
           {params.value}
@@ -78,9 +80,9 @@ export default function LessonsGrid() {
       width: 120,
       renderCell: (params) =>
         params.value ? (
-          <span className="text-green-600 ">True</span>
+          <span className="text-green-600">True</span>
         ) : (
-          <span className="text-red-600 ">False</span>
+          <span className="text-red-600">False</span>
         ),
     },
     {
@@ -120,8 +122,14 @@ export default function LessonsGrid() {
             setPage(model.page + 1);
             setPageSize(model.pageSize);
           }}
+          onRowClick={(params) => {
+            navigate(`/lessons/${params.row.id}`, {
+              state: { lesson: params.row.fullData },
+            });
+          }}
           loading={loading}
           sx={{
+            cursor: "pointer",
             "& .MuiDataGrid-columnHeaders": {
               backgroundColor: "#f3f4f6",
               color: "#333",
