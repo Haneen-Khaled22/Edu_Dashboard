@@ -17,10 +17,12 @@ import {
 } from "@mui/material";
 import {
   Menu as MenuIcon,
-  Dashboard,
-  Group,
-  Book,
-  Settings,
+  DashboardOutlined,
+  PeopleAltOutlined,
+  MenuBookOutlined,
+  QuizOutlined,
+  SettingsOutlined,
+  LogoutOutlined,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import adminphoto from "../../assets/edulogo.jpg";
@@ -28,10 +30,12 @@ import adminphoto from "../../assets/edulogo.jpg";
 const drawerWidth = 240;
 
 const pages = [
-  { name: "Dashboard", icon: <Dashboard />, path: "/" },
-  { name: "Users", icon: <Group />, path: "/users" },
-  { name: "Lessons", icon: <Book />, path: "/lessons" },
-  { name: "Settings", icon: <Settings />, path: "/settings" },
+  { name: "Dashboard", icon: <DashboardOutlined sx={{ color: "#6a11cb" }} />, path: "/" },
+  { name: "Users", icon: <PeopleAltOutlined sx={{ color: "#00BFA6" }} />, path: "/users" },
+  { name: "Lessons", icon: <MenuBookOutlined sx={{ color: "#FF9800" }} />, path: "/lessons" },
+  { name: "Exams", icon: <QuizOutlined sx={{ color: "#E91E63" }} />, path: "/exams" },
+  { name: "Settings", icon: <SettingsOutlined sx={{ color: "#607D8B" }} />, path: "/settings" },
+  { name: "Logout", icon: <LogoutOutlined sx={{ color: "#F44336" }} /> },
 ];
 
 export default function ResponsiveSidebar({ children }) {

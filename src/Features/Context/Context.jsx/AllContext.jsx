@@ -1,11 +1,13 @@
 import { createContext, useContext, useState } from "react";
 import { useAuth } from "./AuthContext";
+import toast from "react-hot-toast";
 
 const UsersContext = createContext();
 
 export function UsersContextProvider({ children }) {
   const [totalUsers, setTotalUsers] = useState([]);
   const [totalLessons, setTotalLessons] = useState([]);
+   const [totalExams, setTotalExams] = useState([]);
 
    const { token } = useAuth();
   
@@ -74,7 +76,7 @@ export function UsersContextProvider({ children }) {
   // get all lessons
  const getAllLessons = async (page = 1, limit = 10) => {
   try {
-    const token = localStorage.getItem("token");
+   
 
     if (!token) {
       console.error("No token found in localStorage");
@@ -83,7 +85,7 @@ export function UsersContextProvider({ children }) {
 
     // ✅ لو API عنده pagination
     const response = await fetch(
-      `https://edu-master-psi.vercel.app/lesson/?isPaid=true&sortBy=scheduledDate&sortOrder=asc&scheduledAfter=2025-07-01&page=${page}&limit=${limit}`,
+      `https://edu-master-psi.vercel.app/lesson?page=${page}&limit=${limit}`,
       {
         headers: {
           token: token,
@@ -113,8 +115,8 @@ export function UsersContextProvider({ children }) {
   }
 };
 
-// get lesson ById
- // ✅ Get Lesson by ID
+
+ // Get Lesson by ID
 const getLessonById = async (id) => {
   try {
     if (!token) {
@@ -147,7 +149,7 @@ const getLessonById = async (id) => {
   }
 };
 
-// ✅ Delete Lesson
+//  Delete Lesson
 const deleteLesson = async (id) => {
   try {
     if (!token) {
@@ -180,10 +182,85 @@ const deleteLesson = async (id) => {
   }
 };
 
+// add lesson
+const addLesson = async (lessonData) => {
+  try {
+  
+
+    if (!token) {
+      console.error("No token found in localStorage");
+      return;
+    }
+
+    const response = await fetch("https://edu-master-psi.vercel.app/lesson", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        token: token,  
+      },
+      body: JSON.stringify(lessonData), // lessonData هو object فيه كل البيانات
+    });
+
+    const data = await response.json();
+    console.log("Add Lesson Response:", data);
+
+    if (response.ok) {
+      console.log("✅ Lesson added successfully",data);
+      toast.success("Lesson added successfully")
+    } else {
+      console.error("❌ Error adding lesson:", data.message);
+      toast.error(data.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("🚨 Add Lesson Error:", error);
+  }
+};
+
+// get all exams
+ const getAllExams = async () => {
+  try {
+   
+
+    if (!token) {
+      console.error("No token found in localStorage");
+      return;
+    }
+
+    
+    const response = await fetch(
+      `https://edu-master-psi.vercel.app/exam`,
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+    console.log("Exams Data:", data);
+
+    if (response.ok) {
+      // ✅ حفظ البيانات في الـ state
+      setTotalExams(data.data || []);
+
+      // ✅ نرجع كل حاجة علشان الكومبوننت يستخدمها
+      return data;
+    } else {
+      console.error("Error fetching exams:", data.message);
+     
+    }
+  } catch (error) {
+    console.error("Fetch exams Error:", error);
+   
+  }
+};
+
 
 
   return (
-    <UsersContext.Provider value={{ totalUsers, setTotalUsers, getAllUsers,getAllAdmins,getAllLessons,totalLessons,setTotalLessons,getLessonById,deleteLesson }}>
+    <UsersContext.Provider value={{ totalUsers, setTotalUsers, getAllUsers,getAllAdmins,getAllLessons,totalLessons,setTotalLessons,getLessonById,deleteLesson,addLesson,getAllExams,totalExams,setTotalExams }}>
       {children}
     </UsersContext.Provider>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   AreaChart,
   Area,
@@ -10,19 +10,17 @@ import {
 import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 
 const StatsCard = ({ title, value, percentage, color, data }) => {
-
-   
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col justify-between h-full">
       {/* Header */}
-      <div className="flex flex-col gap-2 ">
-        <h3 className="text-sm font-medium text-gray-600 ">{title}</h3>
+      <div className="flex flex-col gap-2">
+        <h3 className="text-sm font-medium text-gray-600">{title}</h3>
         <p className="text-3xl font-bold text-gray-900">{value}</p>
         <p className="text-xs font-medium text-green-500">{percentage}</p>
       </div>
 
       {/* Chart */}
-      <div className="h-22">
+      <div className="h-24">
         <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={data}>
             <defs>
@@ -56,79 +54,87 @@ const StatsCard = ({ title, value, percentage, color, data }) => {
 };
 
 export default function Dashboard() {
-  const { getAllUsers, totalUsers } = useUsers();
-  
-  
-    useEffect(() => {
-      // نستدعي الفنكشن عشان تجيب اليوزرز أول ما الصفحة تفتح
-      getAllUsers();
-    }, []);
-  
-  const newStudentsData = [
-    { value: 6000 },
-    { value: 6500 },
-    { value: 7200 },
-    { value: 7800 },
-    { value: 8531 },
-  ];
+  const { getAllUsers, getAllLessons, getAllExams } = useUsers();
+  const [stats, setStats] = useState({
+    totalUsers: 0,
+    totalLessons: 0,
+    totalExams: 0,
+    paidLessons: 0,
+  });
 
-  const totalStudentsData = [
-    { value: 7000 },
-    { value: 7200 },
-    { value: 7500 },
-    { value: 8200 },
-    { value: 8531 },
-  ];
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const usersRes = await getAllUsers();
+        const lessonsRes = await getAllLessons();
+        const examsRes = await getAllExams();
 
-  const dailyAttendData = [
-    { value: 85 },
-    { value: 87 },
-    { value: 86 },
-    { value: 88 },
-    { value: 89 },
-  ];
+        const users = usersRes?.data || [];
+        const lessons = lessonsRes?.lessons || [];
+        const exams = examsRes?.data || [];
+        console.log("📘 Users API:", usersRes);
+console.log("📗 Lessons API:", lessons);
+console.log("📕 Exams API:", examsRes);
 
-  const avgAttendsData = [
-    { value: 97 },
-    { value: 98 },
-    { value: 99 },
-    { value: 99.5 },
-    { value: 99.05 },
-  ];
+
+        const paidLessons = lessons.filter(
+          (l) => l.price && Number(l.price) > 0
+        ).length;
+
+        setStats({
+          totalUsers: users.length,
+          totalLessons: lessons.length,
+          totalExams: exams.length,
+          paidLessons,
+        });
+      } catch (error) {
+        console.error("Error fetching stats:", error);
+      }
+    };
+
+    fetchStats();
+  }, []);
+
+  // ✅ إنشاء بيانات الرسوم البيانية بشكل نسبي
+  const chartData = (value) =>
+    Array.from({ length: 5 }, (_, i) => ({
+      value: Math.floor(value * (0.7 + i * 0.07)),
+    }));
 
   const cards = [
     {
-      title: "New Students",
-      value: "8,531",
-      percentage: "+12% from last month",
-      color: "#6366f1",
-      data: newStudentsData,
-    },
-    {
-      title: "Total Students",
-      value: `${totalUsers.length}`,
+      title: "Total Users",
+      value: stats.totalUsers,
       percentage: "+8% from last month",
+      color: "#6366f1",
+      data: chartData(stats.totalUsers),
+    },
+    {
+      title: "Total Lessons",
+      value: stats.totalLessons,
+      percentage: "+5% from last month",
       color: "#f97316",
-      data: totalStudentsData,
+      data: chartData(stats.totalLessons),
     },
     {
-      title: "Daily Attendance",
-      value: "88%",
-      percentage: "+2% this week",
-      color: "#a855f7",
-      data: dailyAttendData,
+      title: "Paid Lessons",
+      value: stats.paidLessons,
+      percentage: "+3% this week",
+      color: "#22c55e",
+      data: chartData(stats.paidLessons),
     },
     {
-      title: "Average Attendance",
-      value: "99.05%",
-      percentage: "+0.5% from last week",
+      title: "Total Exams",
+      value: stats.totalExams,
+      percentage: "+10% this month",
       color: "#06b6d4",
-      data: avgAttendsData,
+      data: chartData(stats.totalExams),
     },
   ];
 
   return (
-    <div className=" lg:p-6">
+    <div className="lg:p-6">
+      <h2 className="text-2xl font-bold text-gray-800 mb-4">Dashboard Overview</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 cursor-pointer">
         {cards.map((card, index) => (
           <StatsCard key={index} {...card} />

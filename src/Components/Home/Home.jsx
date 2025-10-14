@@ -5,6 +5,7 @@ import { Container } from "@mui/material";
 import AdminHeader from "../AdminHeader/AdminHeader";
 import Dashboard from "../StatCard/StatCard";
 import RecentUsers from "../Recent Users/RecentUsers";
+import LessonsOverview from "../LessonsOverview.jsx/LessonsOverview";
 
 function Home() {
   return (
@@ -13,6 +14,7 @@ function Home() {
         <AdminHeader />
         
         <Dashboard />
+        <LessonsOverview/>
     
       <RecentUsers/>
     </div>

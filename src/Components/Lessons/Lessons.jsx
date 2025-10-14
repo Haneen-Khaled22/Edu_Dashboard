@@ -3,6 +3,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Plus } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 export default function LessonsGrid() {
   const { getAllLessons } = useUsers();
@@ -11,9 +13,19 @@ export default function LessonsGrid() {
   const [total, setTotal] = useState(0);
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
-  const navigate = useNavigate(); // 👈 استخدم النيفيجيت هنا
+  const navigate = useNavigate();
+
+  const location = useLocation();
+
+
+  function addLessonPage(){
+    navigate('/addlesson')
+  }
+
 
   const fetchLessons = async (pageNum = 1) => {
+    
+
     setLoading(true);
     const { lessons, pagination } = await getAllLessons(pageNum, pageSize);
     setLoading(false);
@@ -44,7 +56,7 @@ export default function LessonsGrid() {
 
   useEffect(() => {
     fetchLessons(page);
-  }, [page, pageSize]);
+  }, [page, pageSize,location.pathname]);
 
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
@@ -108,7 +120,17 @@ export default function LessonsGrid() {
 
   return (
     <>
-      <h2 className="font-bold text-[#6a11cb] text-xl mb-3">All Lessons</h2>
+    <div className="flex justify-between items-center gap-6 ">
+        <h2 className="font-bold text-[#6a11cb] text-xl mb-3">All Lessons</h2>
+       <button
+       onClick={addLessonPage}
+       className="flex items-center gap-2 bg-[#6a11cb] hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg transition-all cursor-pointer">
+                <Plus className="w-4 h-4" />
+                Add Lesson
+              </button>
+    </div>
+    
+
 
       <div style={{ height: "auto", width: "100%", marginTop: "20px" }}>
         <DataGrid
@@ -129,17 +151,17 @@ export default function LessonsGrid() {
           }}
           loading={loading}
           sx={{
-            cursor: "pointer",
             "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: "#f3f4f6",
-              color: "#333",
+              backgroundColor: "#f3e8ff",
+              color: "#6a11cb",
               fontWeight: "bold",
             },
-            "& .MuiDataGrid-row:hover": {
-              backgroundColor: "#f9fafb",
+            "& .MuiDataGrid-cell": {
+              fontSize: "0.9rem",
             },
           }}
         />
+        
       </div>
     </>
   );

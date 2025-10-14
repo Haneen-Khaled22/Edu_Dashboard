@@ -41,7 +41,20 @@ export default function CustomGrid() {
     { field: "phone", headerName: "Phone", width: 150 },
     { field: "role", headerName: "Role", width: 120 },
     { field: "updatedAt", headerName: "UpdatedAt", width: 150 },
-    { field: "isVerified", headerName: "IsVerified", width: 150 },
+    { field: "isVerified", headerName: "IsVerified", width: 150,
+
+      renderCell: (params) => (
+         <span
+      style={{
+        color: params.value ? "#22c55e" : "#ef4444", // أخضر أو أحمر
+       
+       
+      }}
+    >
+      {params.value ? "true" : "false"}
+    </span>
+      ),
+     },
   ];
 
   return (
@@ -57,6 +70,16 @@ export default function CustomGrid() {
         initialState={{
           pagination: { paginationModel: { pageSize: 5 } },
         }}
+        sx={{
+            "& .MuiDataGrid-columnHeaders": {
+              backgroundColor: "#f3e8ff",
+              color: "#6a11cb",
+              fontWeight: "bold",
+            },
+            "& .MuiDataGrid-cell": {
+              fontSize: "0.9rem",
+            },
+          }}
       />
     </div>
        </>

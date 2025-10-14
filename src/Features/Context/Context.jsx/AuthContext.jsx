@@ -13,6 +13,9 @@ export function AuthContextProvider({ children }) {
      const [token, setToken] = useState(localStorage.getItem("token") || null);
   const [user, setUser] = useState(null);
     
+  // if(!user){
+  //   return null;
+  // }
 
   const loginAsAdmin = async (email, password) => {
   try {
