@@ -3,11 +3,16 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Plus } from "lucide-react";
 
 export default function AllExams() {
   const { getAllExams, totalExams } = useUsers();
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
+
+  function addExamPage(){
+    navigate('/addExam');
+  }
 
   useEffect(() => {
     getAllExams();
@@ -66,7 +71,15 @@ export default function AllExams() {
 
   return (
     <>
-      <h2 className="font-bold text-[#6a11cb]">All Exams</h2>
+      <div className="flex justify-between items-center gap-6 ">
+              <h2 className="font-bold text-[#6a11cb] text-xl mb-3">All Exams</h2>
+             <button
+             onClick={addExamPage}
+             className="flex items-center gap-2 bg-[#6a11cb] hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg transition-all cursor-pointer">
+                      <Plus className="w-4 h-4" />
+                      Add Exam
+                    </button>
+          </div>
 
       <div style={{ height: "auto", width: "100%", marginTop: "20px" }}>
         <DataGrid

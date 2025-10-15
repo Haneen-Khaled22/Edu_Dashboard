@@ -15,6 +15,7 @@ import Exams from './Components/Exams/Exams'
 import AddLesson from './Components/AddLesson/AddLesson'
 import { Toaster } from 'react-hot-toast'
 import ExamDetails from './Components/ExamDetails/ExamDetails'
+import AddExam from './Components/AddExam/AddExam'
 
 function App() {
 
@@ -31,6 +32,7 @@ function App() {
         {path:"lessons/:id",element:<LessonDetails/>},
         {path:"addlesson",element:<AddLesson/>},
         {path:"exams/:id",element:<ExamDetails/>},
+        {path:"addExam",element:<AddExam/>},
       ]
     }
   ])
