@@ -11,7 +11,7 @@ import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 
 const StatsCard = ({ title, value, percentage, color, data }) => {
   return (
-    <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col justify-between h-full">
+    <div className="bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 p-6 flex flex-col justify-between h-full ">
       {/* Header */}
       <div className="flex flex-col gap-2">
         <h3 className="text-sm font-medium text-gray-600">{title}</h3>
@@ -134,7 +134,7 @@ console.log("📕 Exams API:", examsRes);
 
   return (
     <div className="lg:p-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-4">Dashboard Overview</h2>
+      <h2 className="text-2xl font-bold text-gray-800 mb-6 mt-12">Dashboard Overview</h2>
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 cursor-pointer">
         {cards.map((card, index) => (
           <StatsCard key={index} {...card} />

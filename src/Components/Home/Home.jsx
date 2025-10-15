@@ -6,6 +6,7 @@ import AdminHeader from "../AdminHeader/AdminHeader";
 import Dashboard from "../StatCard/StatCard";
 import RecentUsers from "../Recent Users/RecentUsers";
 import LessonsOverview from "../LessonsOverview.jsx/LessonsOverview";
+import ExamsStats from "../ExamsOverview/ExamsOverview";
 
 function Home() {
   return (
@@ -16,7 +17,12 @@ function Home() {
         <Dashboard />
         <LessonsOverview/>
     
+    <div className="flex justify-between items-center gap-4">
+     
       <RecentUsers/>
+       {/* <ExamsStats/> */}
+    </div>
+      
     </div>
   );
 }

@@ -6,9 +6,10 @@ import Swal from "sweetalert2";
 
 export default function LessonDetails() {
   const { id } = useParams();
-  const { getLessonById, deleteLesson } = useUsers();
+  const { getLessonById, deleteLesson, updateLesson } = useUsers();
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -22,46 +23,66 @@ export default function LessonDetails() {
     fetchLesson();
   }, [id]);
 
- 
-
-const handleDelete = async () => {
-  Swal.fire({
-    title: "Are you sure?",
-    text: "This lesson will be permanently deleted!",
-    icon: "warning",
-    showCancelButton: true,
-    confirmButtonColor: "#d33",
-    cancelButtonColor: "#3085d6",
-    confirmButtonText: "Yes, delete it!",
-    cancelButtonText: "Cancel",
-    background: "#fff",
-    customClass: {
-      title: "text-[#6a11cb] ",
-      popup: "rounded-3xl shadow-lg border border-gray-200",
-    },
-  }).then(async (result) => {
-    if (result.isConfirmed) {
-      const res = await deleteLesson(id);
-      if (res?.success) {
-        Swal.fire({
-          title: "Deleted!",
-          text: "Lesson deleted successfully!",
-          icon: "success",
-          confirmButtonColor: "#6a11cb",
-        });
-        navigate("/lessons");
-      } else {
-        Swal.fire({
-          title: "Error!",
-          text: "Something went wrong while deleting.",
-          icon: "error",
-          confirmButtonColor: "#6a11cb",
-        });
+  const handleDelete = async () => {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "This lesson will be permanently deleted!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+      background: "#fff",
+      customClass: {
+        title: "text-[#6a11cb]",
+        popup: "rounded-3xl shadow-lg border border-gray-200",
+      },
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        const res = await deleteLesson(id);
+        if (res?.success) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Lesson deleted successfully!",
+            icon: "success",
+            confirmButtonColor: "#6a11cb",
+          });
+          navigate("/lessons");
+        } else {
+          Swal.fire({
+            title: "Error!",
+            text: "Something went wrong while deleting.",
+            icon: "error",
+            confirmButtonColor: "#6a11cb",
+          });
+        }
       }
-    }
-  });
-};
+    });
+  };
 
+  const handleUpdate = async (e) => {
+    e.preventDefault();
+    const updatedData = {
+    
+      title: e.target.title.value,
+      description: e.target.description.value,
+      video: e.target.video.value,
+      price: Number(e.target.price.value),
+      classLevel: e.target.classLevel.value,
+     
+    };
+
+    const res = await updateLesson(id, updatedData);
+
+    if (res?.success) {
+    
+      setLesson((prev) => ({ ...prev, ...updatedData }));
+      setIsModalOpen(false);
+    } else {
+     console.log('error');
+    }
+  };
 
   if (loading)
     return (
@@ -72,34 +93,37 @@ const handleDelete = async () => {
 
   if (!lesson) return null;
 
-  // استخراج فيديو يوتيوب من اللينك
   const embedUrl = (() => {
     if (!lesson.video) return null;
-
     let url = lesson.video.trim();
-
-    if (url.includes("watch?v=")) {
-      return url.replace("watch?v=", "embed/");
-    } else if (url.includes("youtu.be/")) {
+    if (url.includes("watch?v=")) return url.replace("watch?v=", "embed/");
+    if (url.includes("youtu.be/"))
       return url.replace("youtu.be/", "youtube.com/embed/");
-    } else {
-      return null;
-    }
+    return null;
   })();
 
   return (
     <div className="max-w-5xl mx-auto bg-white shadow-lg rounded-2xl p-8 mt-10 border border-gray-100">
       {/* Header */}
-      <div className="flex items-center justify-between mb-6">
+      <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
         <h2 className="text-3xl font-bold text-[#6a11cb]">
           {lesson.title || "Lesson Details"}
         </h2>
-        <button
-          onClick={handleDelete}
-          className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-3xl font-medium text-sm transition-all cursor-pointer"
-        >
-          Delete Lesson
-        </button>
+        <div className="flex gap-3">
+          <button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-[#6a11cb] hover:bg-[#5b0fbf] text-white px-4 py-2 rounded-3xl font-medium text-sm transition-all cursor-pointer"
+          >
+            Update Lesson
+          </button>
+
+          <button
+            onClick={handleDelete}
+            className="bg-red-600 hover:bg-red-700 text-white px-3 py-2 rounded-3xl font-medium text-sm transition-all cursor-pointer"
+          >
+            Delete Lesson
+          </button>
+        </div>
       </div>
 
       {/* Video Section */}
@@ -181,16 +205,129 @@ const handleDelete = async () => {
       <div className="mt-10 text-right">
         <button
           onClick={() => navigate("/lessons")}
-          className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-2 rounded-xl font-medium transition-all cursor-pointer"
+          className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-3 py-2 rounded-3xl font-medium transition-all cursor-pointer"
         >
           Back to Lessons
         </button>
       </div>
+
+      {/* Update Modal */}
+{isModalOpen && (
+  <div
+    className="fixed inset-0 z-50 flex items-center justify-center 
+               bg-black/40 backdrop-blur-sm p-4"
+  >
+    {/* Modal Box */}
+    <div
+      className="bg-white rounded-2xl shadow-2xl p-6 w-full max-w-md mt-3
+                 h-[80vh] overflow-y-auto transform transition-all duration-300"
+    >
+      <h3 className="text-xl font-semibold text-[#6a11cb]  text-center  pb-3">
+        Update Lesson
+      </h3>
+
+      <form onSubmit={handleUpdate} className="space-y-4">
+        {/* Title */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Title
+          </label>
+          <input
+            name="title"
+            defaultValue={lesson.title}
+            placeholder="Enter lesson title"
+            className="w-full border border-gray-300 rounded-xl p-2.5 
+                       focus:outline-none focus:ring-2 focus:ring-[#6a11cb]"
+          />
+        </div>
+
+        {/* Description */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Description
+          </label>
+          <textarea
+            name="description"
+            defaultValue={lesson.description}
+            placeholder="Enter lesson description"
+            rows={3}
+            className="w-full border border-gray-300 rounded-xl p-2.5 
+                       focus:outline-none focus:ring-2 focus:ring-[#6a11cb]"
+          />
+        </div>
+
+        {/* Video URL */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Video URL
+          </label>
+          <input
+            name="video"
+            defaultValue={lesson.video}
+            placeholder="Enter video link"
+            className="w-full border border-gray-300 rounded-xl p-2.5 
+                       focus:outline-none focus:ring-2 focus:ring-[#6a11cb]"
+          />
+        </div>
+
+        {/* Class Level */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Class Level
+          </label>
+          <input
+            name="classLevel"
+            defaultValue={lesson.classLevel}
+            placeholder="Enter class level"
+            className="w-full border border-gray-300 rounded-xl p-2.5 
+                       focus:outline-none focus:ring-2 focus:ring-[#6a11cb]"
+          />
+        </div>
+
+        {/* Price */}
+        <div>
+          <label className="block text-sm font-medium text-gray-600 mb-1">
+            Price
+          </label>
+          <input
+            name="price"
+            type="number"
+            defaultValue={lesson.price}
+            placeholder="Enter price"
+            className="w-full border border-gray-300 rounded-xl p-2.5 
+                       focus:outline-none focus:ring-2 focus:ring-[#6a11cb]"
+          />
+        </div>
+
+        {/* Buttons */}
+        <div className="flex justify-end gap-3 pt-3 sticky bottom-0 bg-white pb-2">
+          <button
+            type="button"
+            onClick={() => setIsModalOpen(false)}
+            className="bg-gray-200 hover:bg-gray-300 text-gray-700 px-4 py-2 rounded-xl font-medium cursor-pointer"
+          >
+            Cancel
+          </button>
+          <button
+            type="submit"
+            className="bg-[#6a11cb] hover:bg-[#5b0fbf] text-white px-4 py-2 rounded-xl font-medium cursor-pointer"
+          >
+            Save
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+)}
+
+
+
+
+
     </div>
   );
 }
 
-// مكون صغير لإعادة استخدامه في عرض التفاصيل
 const DetailItem = ({ label, value, valueClass = "" }) => (
   <div>
     <p className="text-sm text-gray-500">{label}</p>

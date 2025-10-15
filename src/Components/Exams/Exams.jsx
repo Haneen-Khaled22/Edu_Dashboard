@@ -3,7 +3,6 @@ import { DataGrid } from "@mui/x-data-grid";
 import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Button, Chip } from "@mui/material";
 
 export default function AllExams() {
   const { getAllExams, totalExams } = useUsers();
@@ -31,14 +30,11 @@ export default function AllExams() {
             ? new Date(exam.endDate).toLocaleDateString()
             : "N/A",
           questions: exam.questions || [],
+          fullExam: exam, // نحفظ كل بيانات الامتحان هنا علشان نبعتها
         }))
       );
     }
   }, [totalExams]);
-
-  const handleViewQuestions = (exam) => {
-    navigate(`/exams/${exam.id}/questions`, { state: { exam } });
-  };
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -49,39 +45,24 @@ export default function AllExams() {
     {
       field: "isPublished",
       headerName: "Status",
-      width: 150,
+      width: 130,
       renderCell: (params) => (
-         <span
-      style={{
-        color: params.value ? "#22c55e" : "#ef4444", // أخضر أو أحمر
-       
-       
-      }}
-    >
-      {params.value ? "true" : "false"}
-    </span>
-      ),
-    },
-    {
-      field: "questions",
-      headerName: "Questions",
-      width: 160,
-      renderCell: (params) => (
-        <Button
-          variant="contained"
-          size="small"
-          onClick={() => handleViewQuestions(params.row)}
+        <span
           style={{
-            backgroundColor: "#6a11cb",
-            textTransform: "none",
-            fontWeight: "bold",
+            color: params.value ? "#22c55e" : "#ef4444",
+            fontWeight: "500",
           }}
         >
-          View Questions
-        </Button>
+          {params.value ? "Published" : "Draft"}
+        </span>
       ),
     },
   ];
+
+  // 👇 لما المستخدم يضغط على صف
+  const handleRowClick = (params) => {
+    navigate(`/exams/${params.row.id}`, { state: { exam: params.row.fullExam } });
+  };
 
   return (
     <>
@@ -92,6 +73,7 @@ export default function AllExams() {
           rows={rows}
           columns={columns}
           pageSizeOptions={[5, 10, 20]}
+          onRowClick={handleRowClick} // 🟣 هنا بنضيف الحدث
           initialState={{
             pagination: { paginationModel: { pageSize: 5 } },
           }}
@@ -103,6 +85,7 @@ export default function AllExams() {
             },
             "& .MuiDataGrid-cell": {
               fontSize: "0.9rem",
+              cursor: "pointer",
             },
           }}
         />

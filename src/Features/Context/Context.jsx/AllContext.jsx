@@ -218,6 +218,42 @@ const addLesson = async (lessonData) => {
   }
 };
 
+const updateLesson = async (id,updatedData) => {
+  try {
+
+    if (!token) {
+      console.error("No token found in localStorage");
+      toast.error("Authentication token not found!");
+      return;
+    }
+
+    const response = await fetch(`https://edu-master-psi.vercel.app/lesson/${id}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        token, // ممكن تكتبها كده مباشرة
+      },
+      body: JSON.stringify(updatedData),
+    });
+
+    const data = await response.json();
+    console.log("Update Lesson Response:", data);
+
+    if (!response.ok) {
+      throw new Error(data.message || "Failed to update lesson");
+    }
+
+    toast.success("Lesson updated successfully");
+    return data;
+  } catch (error) {
+    console.error(" updateLesson Error:", error);
+    toast.error(error.message || "Something went wrong while updating lesson");
+  }
+};
+
+
+
+
 // get all exams
  const getAllExams = async () => {
   try {
@@ -257,10 +293,43 @@ const addLesson = async (lessonData) => {
   }
 };
 
+ // Get exam by ID
+const getExamById = async (id) => {
+  try {
+    if (!token) {
+      console.error("No token found in localStorage");
+      return;
+    }
+
+    const response = await fetch(
+      `https://edu-master-psi.vercel.app/exam/${id}`,
+      {
+        headers: {
+          token: token,
+        },
+      }
+    );
+
+    const data = await response.json();
+    console.log("Exam details:", data);
+
+    if (response.ok) {
+      console.log("Fetched exam details successfully");
+      return data;
+    } else {
+      console.error("Error fetching exam details:", data.message);
+    }
+
+    return data;
+  } catch (error) {
+    console.error("Fetch exam detail error:", error);
+  }
+};
+
 
 
   return (
-    <UsersContext.Provider value={{ totalUsers, setTotalUsers, getAllUsers,getAllAdmins,getAllLessons,totalLessons,setTotalLessons,getLessonById,deleteLesson,addLesson,getAllExams,totalExams,setTotalExams }}>
+    <UsersContext.Provider value={{ totalUsers, setTotalUsers, getAllUsers,getAllAdmins,getAllLessons,totalLessons,setTotalLessons,getLessonById,deleteLesson,addLesson,getAllExams,totalExams,setTotalExams,updateLesson ,getExamById}}>
       {children}
     </UsersContext.Provider>
   );
