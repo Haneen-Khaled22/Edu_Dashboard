@@ -5,7 +5,7 @@ import { Container } from "@mui/material";
 import AdminHeader from "../AdminHeader/AdminHeader";
 import LessonsOverview from "../Lessons/LessonsOverview";
 import RecentUsers from "../Users/RecentUsers";
-// import Dashboard from "../StatCard/StatCard";
+import Dashboard from "../StatCard/StatCard";
 // import RecentUsers from "../Users/RecentUsers";
 // import LessonsOverview from "../Lessons/LessonsOverview";
 // import ExamsStats from "../Exams/ExamsOverview";
