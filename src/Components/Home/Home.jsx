@@ -6,24 +6,25 @@ import AdminHeader from "../AdminHeader/AdminHeader";
 import LessonsOverview from "../Lessons/LessonsOverview";
 import RecentUsers from "../Users/RecentUsers";
 import Dashboard from "../StatCard/StatCard";
+import ExamsStats from "../Exams/ExamsOverview";
 // import RecentUsers from "../Users/RecentUsers";
 // import LessonsOverview from "../Lessons/LessonsOverview";
 // import ExamsStats from "../Exams/ExamsOverview";
 
 function Home() {
   return (
-    <div className="sm:p-6 lg:p-4 min-h-screen">
+    <div >
       
         <AdminHeader />
         
         <Dashboard />
         <LessonsOverview/>
     
-    <div className="flex justify-between items-center gap-4">
+    
      
-      <RecentUsers/>
-       {/* <ExamsStats/> */}
-    </div>
+      {/* <RecentUsers/> */}
+       <ExamsStats/>
+   
       
     </div>
   );

@@ -10,6 +10,7 @@ export function UsersContextProvider({ children }) {
   const { token } = useAuth();
 
   //users
+  
   // get all users
   const getAllUsers = async () => {
     try {

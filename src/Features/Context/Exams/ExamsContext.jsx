@@ -43,11 +43,11 @@ export function ExamsContextProvider({ children }) {
        return data;
      } else {
        console.error("Error fetching exams:", data.message);
-      
+       return { Exams: [] };
      }
    } catch (error) {
      console.error("Fetch exams Error:", error);
-    
+     return { Exams: [] };
    }
  };
  

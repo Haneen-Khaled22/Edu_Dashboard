@@ -139,13 +139,20 @@ console.log("📕 Exams API:", examsRes);
   ];
 
   return (
-    <div className="lg:p-6">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6 mt-12">Dashboard Overview</h2>
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 cursor-pointer">
-        {cards.map((card, index) => (
-          <StatsCard key={index} {...card} />
-        ))}
-      </div>
+  <div className="w-full px-2 sm:px-4 lg:px-8 py-6">
+    <h2 className="text-2xl font-bold text-gray-800 mb-8 mt-8 text-center lg:text-left">
+      Dashboard Overview
+    </h2>
+
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {cards.map((card, index) => (
+        <div key={index} className="w-full">
+          <StatsCard {...card} />
+        </div>
+      ))}
     </div>
-  );
+  </div>
+);
+
+
 }

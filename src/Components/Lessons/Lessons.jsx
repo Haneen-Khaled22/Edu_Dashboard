@@ -14,18 +14,13 @@ export default function LessonsGrid() {
   const [pageSize, setPageSize] = useState(10);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
   const location = useLocation();
 
-
-  function addLessonPage(){
-    navigate('/addlesson')
+  function addLessonPage() {
+    navigate("/addlesson");
   }
 
-
   const fetchLessons = async (pageNum = 1) => {
-    
-
     setLoading(true);
     const { lessons, pagination } = await getAllLessons(pageNum, pageSize);
     setLoading(false);
@@ -45,7 +40,7 @@ export default function LessonsGrid() {
             createdAt: lesson.createdAt
               ? new Date(lesson.createdAt).toLocaleDateString()
               : "N/A",
-            fullData: lesson, // 👈 خزن البيانات الأصلية لو عايز تبعتها كلها
+            fullData: lesson,
           };
         })
       );
@@ -56,7 +51,7 @@ export default function LessonsGrid() {
 
   useEffect(() => {
     fetchLessons(page);
-  }, [page, pageSize,location.pathname]);
+  }, [page, pageSize, location.pathname]);
 
   const columns = [
     { field: "id", headerName: "ID", width: 90 },
@@ -77,11 +72,7 @@ export default function LessonsGrid() {
       headerName: "Price",
       width: 120,
       renderCell: (params) => (
-        <span
-          style={{
-            color: params.value === "Free" ? "green" : "red",
-          }}
-        >
+        <span style={{ color: params.value === "Free" ? "green" : "red" }}>
           {params.value}
         </span>
       ),
@@ -120,48 +111,49 @@ export default function LessonsGrid() {
 
   return (
     <>
-    <div className="flex justify-between items-center gap-6 ">
-        <h2 className="font-bold text-[#6a11cb] text-xl mb-3">All Lessons</h2>
-       <button
-       onClick={addLessonPage}
-       className="flex items-center gap-2 bg-[#6a11cb] hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg transition-all cursor-pointer">
-                <Plus className="w-4 h-4" />
-                Add Lesson
-              </button>
-    </div>
-    
+      <div className="flex flex-wrap justify-between items-center gap-4">
+        <h2 className="font-bold text-[#6a11cb] text-xl">All Lessons</h2>
+        <button
+          onClick={addLessonPage}
+          className="flex items-center gap-2 bg-[#6a11cb] hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg transition-all cursor-pointer"
+        >
+          <Plus className="w-4 h-4" />
+          Add Lesson
+        </button>
+      </div>
 
-
-      <div style={{ height: "auto", width: "100%", marginTop: "20px" }}>
-        <DataGrid
-          rows={rows}
-          columns={columns}
-          paginationMode="server"
-          rowCount={total}
-          pageSizeOptions={[5, 10, 20]}
-          paginationModel={{ page: page - 1, pageSize }}
-          onPaginationModelChange={(model) => {
-            setPage(model.page + 1);
-            setPageSize(model.pageSize);
-          }}
-          onRowClick={(params) => {
-            navigate(`/lessons/${params.row.id}`, {
-              state: { lesson: params.row.fullData },
-            });
-          }}
-          loading={loading}
-          sx={{
-            "& .MuiDataGrid-columnHeaders": {
-              backgroundColor: "#f3e8ff",
-              color: "#6a11cb",
-              fontWeight: "bold",
-            },
-            "& .MuiDataGrid-cell": {
-              fontSize: "0.9rem",
-            },
-          }}
-        />
-        
+      {/* ✅ Responsive container */}
+      <div className="w-full overflow-x-auto mt-5 rounded-lg shadow-sm">
+        <div style={{ minWidth: "800px", height: "auto" }}>
+          <DataGrid
+            rows={rows}
+            columns={columns}
+            paginationMode="server"
+            rowCount={total}
+            pageSizeOptions={[5, 10, 20]}
+            paginationModel={{ page: page - 1, pageSize }}
+            onPaginationModelChange={(model) => {
+              setPage(model.page + 1);
+              setPageSize(model.pageSize);
+            }}
+            onRowClick={(params) => {
+              navigate(`/lessons/${params.row.id}`, {
+                state: { lesson: params.row.fullData },
+              });
+            }}
+            loading={loading}
+            sx={{
+              "& .MuiDataGrid-columnHeaders": {
+                backgroundColor: "#f3e8ff",
+                color: "#6a11cb",
+                fontWeight: "bold",
+              },
+              "& .MuiDataGrid-cell": {
+                fontSize: "0.9rem",
+              },
+            }}
+          />
+        </div>
       </div>
     </>
   );

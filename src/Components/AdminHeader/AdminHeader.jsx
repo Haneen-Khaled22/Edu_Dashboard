@@ -1,7 +1,20 @@
 import React from "react";
 import { Plus } from "lucide-react"; // أيقونة بديلة خفيفة (من lucide-react)
+import { useNavigate } from "react-router-dom";
 
 export default function AdminHeader() {
+
+  let navigate = useNavigate();
+
+  function navigateToAddLesson(){
+    navigate("/addlesson")
+
+  }
+
+   function navigateToAddExam(){
+    navigate("/addExam")
+
+  }
   return (
     <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center  rounded-2xl  gap-4 ">
       {/* Left side: Title + Subtitle */}
@@ -14,13 +27,17 @@ export default function AdminHeader() {
 
       {/* Right side: Buttons */}
       <div className="flex flex-row gap-4">
-        <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg transition-all">
+        <button 
+         onClick={navigateToAddLesson}
+        className="cursor-pointer flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg transition-all">
           <Plus className="w-4 h-4" />
-          Add Course
+          Add Lesson
         </button>
-        <button className="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg transition-all">
+        <button
+        onClick={navigateToAddExam}
+        className="cursor-pointer flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg transition-all">
           <Plus className="w-4 h-4" />
-          Add User
+          Add Exam
         </button>
       </div>
     </div>

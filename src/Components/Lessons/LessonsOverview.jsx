@@ -65,16 +65,20 @@ export default function LessonsOverview() {
   ];
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-10">
+  <div className="w-full px-3 sm:px-4 lg:px-8 mt-10">
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
       {/* === Left Side: Bar Chart === */}
-      <div className="bg-white  rounded-2xl p-5 border border-gray-100">
+      <div className="bg-white rounded-2xl p-5 border border-gray-100 w-full overflow-x-auto">
         <h3 className="text-lg font-bold text-[#6a11cb] mb-4 text-center">
           Lessons Statistics
         </h3>
 
-        <div className="w-full h-80">
-          <ResponsiveContainer>
-            <BarChart data={barData} margin={{ top: 10, right: 20, left: 0, bottom: 10 }}>
+        <div className="w-full h-80 min-w-[280px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart
+              data={barData}
+              margin={{ top: 10, right: 20, left: 0, bottom: 10 }}
+            >
               <CartesianGrid strokeDasharray="3 3" />
               <XAxis dataKey="name" />
               <YAxis allowDecimals={false} />
@@ -87,15 +91,15 @@ export default function LessonsOverview() {
       </div>
 
       {/* === Right Side: Pie Charts === */}
-      <div className="bg-white rounded-2xl p-5 border border-gray-100">
+      <div className="bg-white rounded-2xl p-5 border border-gray-100 w-full">
         <h3 className="text-lg font-bold text-[#6a11cb] mb-4 text-center">
           Lessons Overview
         </h3>
 
-        <div className="flex flex-col md:flex-row justify-center items-center gap-8">
+        <div className="flex flex-col md:flex-row justify-center items-center gap-8 flex-wrap">
           {/* Pie Chart: Paid vs Free */}
-          <div className="w-64 h-64">
-            <ResponsiveContainer>
+          <div className="w-full sm:w-72 h-64">
+            <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={pieData}
@@ -119,8 +123,8 @@ export default function LessonsOverview() {
           </div>
 
           {/* Pie Chart: Lessons per Level */}
-          <div className="w-64 h-64">
-            <ResponsiveContainer>
+          <div className="w-full sm:w-72 h-64">
+            <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
                   data={levelData}
@@ -145,5 +149,7 @@ export default function LessonsOverview() {
         </div>
       </div>
     </div>
-  );
+  </div>
+);
+
 }
