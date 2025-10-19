@@ -23,6 +23,8 @@ import {
   QuizOutlined,
   SettingsOutlined,
   LogoutOutlined,
+  HelpOutlineOutlined,
+  AssignmentTurnedInOutlined,
 } from "@mui/icons-material";
 import { useNavigate } from "react-router-dom";
 import adminphoto from "../../assets/edulogo.jpg";
@@ -34,9 +36,12 @@ const pages = [
   { name: "Users", icon: <PeopleAltOutlined sx={{ color: "#00BFA6" }} />, path: "/users" },
   { name: "Lessons", icon: <MenuBookOutlined sx={{ color: "#FF9800" }} />, path: "/lessons" },
   { name: "Exams", icon: <QuizOutlined sx={{ color: "#E91E63" }} />, path: "/exams" },
-  { name: "Settings", icon: <SettingsOutlined sx={{ color: "#607D8B" }} />, path: "/settings" },
+  { name: "Questions", icon: <HelpOutlineOutlined sx={{ color: "#9C27B0" }} />, path: "/questions" },
+  // { name: "Student Exams", icon: <AssignmentTurnedInOutlined sx={{ color: "#3F51B5" }} />, path: "/student-exams" },
+  // { name: "Settings", icon: <SettingsOutlined sx={{ color: "#607D8B" }} />, path: "/settings" },
   { name: "Logout", icon: <LogoutOutlined sx={{ color: "#F44336" }} /> },
 ];
+
 
 export default function ResponsiveSidebar({ children }) {
   const [mobileOpen, setMobileOpen] = React.useState(false);

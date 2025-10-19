@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
-import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
+import { useExams } from "../../Features/Context/Exams/ExamsContext";
 
 export default function ExamDetails() {
   const { id } = useParams();
   const location = useLocation();
   const navigate = useNavigate();
-  const { getExamById, deleteExam, updateExam } = useUsers();
+  const { getExamById, deleteExam, updateExam } = useExams();
   const [exam, setExam] = useState(location.state?.exam || null);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);

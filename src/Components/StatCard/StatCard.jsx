@@ -7,7 +7,9 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
+import { useLessons } from "../../Features/Context/Lessons/LessonsContext";
+import { useExams } from "../../Features/Context/Exams/ExamsContext";
+import { useUsers } from "../../Features/Context/Users/UsersContext";
 
 const StatsCard = ({ title, value, percentage, color, data }) => {
   return (
@@ -54,7 +56,11 @@ const StatsCard = ({ title, value, percentage, color, data }) => {
 };
 
 export default function Dashboard() {
-  const { getAllUsers, getAllLessons, getAllExams } = useUsers();
+  const { getAllUsers } = useUsers();
+    const {  getAllLessons} = useLessons();
+
+      const {getAllExams } = useExams();
+
   const [stats, setStats] = useState({
     totalUsers: 0,
     totalLessons: 0,

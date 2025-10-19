@@ -1,13 +1,13 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Plus } from "lucide-react";
 import { useLocation } from "react-router-dom";
+import { useLessons } from "../../Features/Context/Lessons/LessonsContext";
 
 export default function LessonsGrid() {
-  const { getAllLessons } = useUsers();
+  const { getAllLessons } = useLessons();
   const [rows, setRows] = useState([]);
   const [page, setPage] = useState(1);
   const [total, setTotal] = useState(0);

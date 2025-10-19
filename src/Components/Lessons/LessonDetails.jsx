@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 import { toast } from "react-hot-toast";
 import Swal from "sweetalert2";
+import { useLessons } from "../../Features/Context/Lessons/LessonsContext";
 
 export default function LessonDetails() {
   const { id } = useParams();
-  const { getLessonById, deleteLesson, updateLesson } = useUsers();
+  const { getLessonById, deleteLesson, updateLesson } = useLessons();
   const [lesson, setLesson] = useState(null);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -12,10 +12,10 @@ import {
   YAxis,
   CartesianGrid,
 } from "recharts";
-import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
+import { useLessons } from "../../Features/Context/Lessons/LessonsContext";
 
 export default function LessonsOverview() {
-  const { getAllLessons } = useUsers();
+  const { getAllLessons } = useLessons();
   const [stats, setStats] = useState({
     totalLessons: 0,
     paid: 0,

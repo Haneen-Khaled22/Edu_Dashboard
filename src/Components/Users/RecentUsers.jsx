@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 import { useNavigate } from "react-router-dom";
+import { useUsers } from "../../Features/Context/Users/UsersContext";
 
 function RecentUsers() {
   const { getAllUsers, totalUsers } = useUsers();

@@ -1,17 +1,18 @@
 import * as React from "react";
 import { DataGrid } from "@mui/x-data-grid";
-import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { Plus } from "lucide-react";
+import { Plus, Play } from "lucide-react";
+import toast from "react-hot-toast";
+import { useExams } from "../../Features/Context/Exams/ExamsContext";
 
 export default function AllExams() {
-  const { getAllExams, totalExams } = useUsers();
+  const { getAllExams, totalExams, startExam } = useExams(); // ✅ نجيب startExam من الكونتكست
   const [rows, setRows] = useState([]);
   const navigate = useNavigate();
 
-  function addExamPage(){
-    navigate('/addExam');
+  function addExamPage() {
+    navigate("/addExam");
   }
 
   useEffect(() => {
@@ -34,12 +35,30 @@ export default function AllExams() {
           endDate: exam.endDate
             ? new Date(exam.endDate).toLocaleDateString()
             : "N/A",
-          questions: exam.questions || [],
-          fullExam: exam, // نحفظ كل بيانات الامتحان هنا علشان نبعتها
+          fullExam: exam,
         }))
       );
     }
   }, [totalExams]);
+
+  // 🟢 دالة بدء الامتحان
+  const handleStartExam = async (examId) => {
+    try {
+      console.log("Starting exam:", examId);
+      const res = await startExam(examId);
+
+      if (res?.success) {
+        toast.success(" Exam started ");
+        // 🧭 بعد النجاح نروح على صفحة الامتحان
+        navigate(`/exams/take/${examId}`, { state: { examData: res } });
+      } else {
+        toast.error(` ${res?.message || "Failed to start exam"}`);
+      }
+    } catch (error) {
+      console.error("🚨 Error starting exam:", error);
+      toast.error("Something went wrong while starting the exam");
+    }
+  };
 
   const columns = [
     { field: "id", headerName: "ID", width: 70 },
@@ -62,9 +81,27 @@ export default function AllExams() {
         </span>
       ),
     },
+    {
+      field: "actions",
+      headerName: "Actions",
+      width: 160,
+      sortable: false,
+      renderCell: (params) => (
+        <button
+          onClick={(e) => {
+            e.stopPropagation(); // يمنع فتح صفحة التفاصيل
+            handleStartExam(params.row.id);
+          }}
+          className="flex items-center gap-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded-lg transition-all"
+        >
+          <Play className="w-4 h-4" />
+          Start Exam
+        </button>
+      ),
+    },
   ];
 
-  // 👇 لما المستخدم يضغط على صف
+  // 🔵 الضغط على الصف = فتح التفاصيل
   const handleRowClick = (params) => {
     navigate(`/exams/${params.row.id}`, { state: { exam: params.row.fullExam } });
   };
@@ -72,21 +109,22 @@ export default function AllExams() {
   return (
     <>
       <div className="flex justify-between items-center gap-6 ">
-              <h2 className="font-bold text-[#6a11cb] text-xl mb-3">All Exams</h2>
-             <button
-             onClick={addExamPage}
-             className="flex items-center gap-2 bg-[#6a11cb] hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg transition-all cursor-pointer">
-                      <Plus className="w-4 h-4" />
-                      Add Exam
-                    </button>
-          </div>
+        <h2 className="font-bold text-[#6a11cb] text-xl mb-3">All Exams</h2>
+        <button
+          onClick={addExamPage}
+          className="flex items-center gap-2 bg-[#6a11cb] hover:bg-indigo-700 text-white font-medium px-3 py-2 rounded-lg transition-all cursor-pointer"
+        >
+          <Plus className="w-4 h-4" />
+          Add Exam
+        </button>
+      </div>
 
       <div style={{ height: "auto", width: "100%", marginTop: "20px" }}>
         <DataGrid
           rows={rows}
           columns={columns}
           pageSizeOptions={[5, 10, 20]}
-          onRowClick={handleRowClick} // 🟣 هنا بنضيف الحدث
+          onRowClick={handleRowClick}
           initialState={{
             pagination: { paginationModel: { pageSize: 5 } },
           }}

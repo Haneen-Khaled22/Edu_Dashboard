@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useAuth } from "../../Features/Context/Context.jsx/AuthContext";
+import { useAuth } from "../../Features/Context/Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
@@ -26,10 +26,10 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-purple-700 to-blue-600 px-4">
-      <div className="bg-white shadow-lg rounded-2xl w-full max-w-md p-8">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
-          Login as an Admin
+    <div className="min-h-screen flex items-center justify-center  px-4">
+      <div className="bg-white shadow-md rounded-xl w-full max-w-md p-8 my-4">
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">
+          Login 
         </h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -73,7 +73,7 @@ export default function Login() {
 
           <button
             type="submit"
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-300"
+            className=" cursor-pointer w-full bg-gradient-to-br from-purple-700 to-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-300"
           >
             Sign In
           </button>

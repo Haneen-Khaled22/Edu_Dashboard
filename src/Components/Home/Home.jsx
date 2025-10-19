@@ -3,10 +3,12 @@ import React from "react";
 // import DashboardStatsCards from '../StatCard/StatCard'
 import { Container } from "@mui/material";
 import AdminHeader from "../AdminHeader/AdminHeader";
-import Dashboard from "../StatCard/StatCard";
-import RecentUsers from "../Recent Users/RecentUsers";
-import LessonsOverview from "../LessonsOverview.jsx/LessonsOverview";
-import ExamsStats from "../ExamsOverview/ExamsOverview";
+import LessonsOverview from "../Lessons/LessonsOverview";
+import RecentUsers from "../Users/RecentUsers";
+// import Dashboard from "../StatCard/StatCard";
+// import RecentUsers from "../Users/RecentUsers";
+// import LessonsOverview from "../Lessons/LessonsOverview";
+// import ExamsStats from "../Exams/ExamsOverview";
 
 function Home() {
   return (

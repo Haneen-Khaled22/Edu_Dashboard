@@ -10,10 +10,10 @@ import {
   ResponsiveContainer,
   Legend,
 } from "recharts";
-import { useUsers } from "../../Features/Context/Context.jsx/AllContext";
+import { useExams } from "../../Features/Context/Exams/ExamsContext";
 
 export default function ExamsStats() {
-  const { getAllExams } = useUsers();
+  const { getAllExams } = useExams();
   const [exams, setExams] = useState([]);
   const [stats, setStats] = useState({
     totalExams: 0,
