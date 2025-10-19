@@ -24,34 +24,39 @@ import { LessonsContextProvider } from './Features/Context/Lessons/LessonsContex
 import { ExamsContextProvider } from './Features/Context/Exams/ExamsContext'
 import { QuestionsContextProvider } from './Features/Context/Questions/QuestionsContext'
 import { UsersContextProvider } from './Features/Context/Users/UsersContext'
+import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute'
 
 function App() {
-
-  let router = createBrowserRouter([
-    {
-      path:"",element:<Layout/>,
-      children:[
-        {index:true,element:<Home/>},
-        {path:"users",element:<Users/>},
-        {path:"lessons",element:<Lessons/>},
-        
-        {path:"login",element:<Login/>},
-        {path:"lessons/:id",element:<LessonDetails/>},
-        {path:"addlesson",element:<AddLesson/>},
-        {path:"exams",element:<Exams/>},
-        {path:"exams/:id",element:<ExamDetails/>},
-         {path:"exams/take/:id",element:<TakeExam/>},
-        {path:"addExam",element:<AddExam/>},
-         {path:"exam-score",element:<ExamScore/>},
-         {path:"/user/:id" ,element:<UserDetails />},
-
-        {path:"questions",element:<Questions/>},
-        {path:"questions/:id",element:<QuestionDetails/>},
-        {path:"addquestion",element:<AddQuestion/>},
-       
-      ]
-    }
-  ])
+let router = createBrowserRouter([
+  {
+    path: "",
+    element: (
+      <ProtectedRoute>
+        <Layout />
+      </ProtectedRoute>
+    ),
+    children: [
+      { index: true, element: <Home /> },
+      { path: "users", element: <Users /> },
+      { path: "lessons", element: <Lessons /> },
+      { path: "lessons/:id", element: <LessonDetails /> },
+      { path: "addlesson", element: <AddLesson /> },
+      { path: "exams", element: <Exams /> },
+      { path: "exams/:id", element: <ExamDetails /> },
+      { path: "exams/take/:id", element: <TakeExam /> },
+      { path: "addExam", element: <AddExam /> },
+      { path: "exam-score", element: <ExamScore /> },
+      { path: "/user/:id", element: <UserDetails /> },
+      { path: "questions", element: <Questions /> },
+      { path: "questions/:id", element: <QuestionDetails /> },
+      { path: "addquestion", element: <AddQuestion /> },
+    ],
+  },
+  {
+    path: "/login",
+    element: <Login />, // صفحة اللوجن متاحة للجميع
+  },
+]);
 
   
   

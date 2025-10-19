@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { useAuth } from "../../Features/Context/Auth/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../Features/Context/Auth/AuthContext";
 
 export default function Login() {
   const navigate = useNavigate();
@@ -17,20 +17,20 @@ export default function Login() {
 
     console.log("Login data:", res);
 
-    if (res.success) {
-      console.log("Login successful");
-      navigate("/");
+   if (res.success) {
+  console.log("✅ Login successful");
+  navigate("/"); // ده تمام دلوقتي
+
+ // ✅ هنا هنروح للهوم بعد النجاح
     } else {
       alert("Invalid email or password");
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center  px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="bg-white shadow-md rounded-xl w-full max-w-md p-8 my-4">
-        <h2 className="text-3xl font-bold text-gray-800 mb-6">
-          Login 
-        </h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-6">Login</h2>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -73,7 +73,7 @@ export default function Login() {
 
           <button
             type="submit"
-            className=" cursor-pointer w-full bg-gradient-to-br from-purple-700 to-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-300"
+            className="cursor-pointer w-full bg-gradient-to-br from-purple-700 to-blue-600 hover:bg-blue-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-300"
           >
             Sign In
           </button>

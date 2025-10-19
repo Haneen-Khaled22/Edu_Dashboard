@@ -1,63 +1,53 @@
+import { createContext, useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
-import { createContext, useContext, useState } from 'react';
+const authContext = createContext();
 
-let authContext = createContext();
-
-
-
-// https://edu-master-psi.vercel.app/auth/login
-
-
-// display total users
 export function AuthContextProvider({ children }) {
-     const [token, setToken] = useState(localStorage.getItem("token") || null);
-  const [user, setUser] = useState(null);
-    
-  // if(!user){
-  //   return null;
-  // }
+  const [token, setToken] = useState(localStorage.getItem("token") || null);
+  
 
+  // ✅ تسجيل الدخول كأدمن
   const loginAsAdmin = async (email, password) => {
   try {
-    const response = await fetch("https://edu-master-psi.vercel.app/auth/login", {
+    const res = await fetch("https://edu-master-psi.vercel.app/auth/login", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-    
-    const data = await response.json();
-    console.log("Login Response:", data);
-   if (data.message === "login successfully") {
-        // ✅ نحفظ التوكن
-        localStorage.setItem("token", data.token);
-        setToken(data.token);
-        console.log("Token saved:", data.token);
 
-        return { success: true, token: data.token };
-      } else {
-        alert("Invalid email or password");
-        return { success: false };
-      }
+    const data = await res.json();
 
-     
-    
-   
-  } catch (error) {
-    console.error("Login Error:", error);
+    if (res.ok && data.token) {
+      localStorage.setItem("token", data.token); // ✅ خزني التوكن هنا
+      return { success: true };
+    } else {
+      return { success: false };
+    }
+  } catch (err) {
+    console.error("Login error:", err);
+    return { success: false };
   }
 };
-const logout = () => {
+
+  // ✅ تحميل التوكن عند فتح الصفحة
+  useEffect(() => {
+    const savedToken = localStorage.getItem("token");
+    if (savedToken) setToken(savedToken);
+  }, []);
+
+  // ✅ تسجيل الخروج
+  const logout = () => {
     localStorage.removeItem("token");
     setToken(null);
-    setUser(null);
+    
   };
 
-    return <authContext.Provider value={{loginAsAdmin,token,user,logout}}>
-        {children}
-        </authContext.Provider>;
+  return (
+    <authContext.Provider value={{ loginAsAdmin, token, logout }}>
+      {children}
+    </authContext.Provider>
+  );
 }
 
-
-export const useAuth =()=> useContext(authContext);
+export const useAuth = () => useContext(authContext);
